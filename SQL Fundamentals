@@ -1,0 +1,295 @@
+CREATE DATABASE company;
+DROP DATABASE company;
+
+CREATE TABLE employee (
+	employee_id SERIAL PRIMARY KEY,     ....by using primary key we can avoid duplicate values
+(column name , data type , constraint)   ....we can use SERIAL data type instead of INT
+   	name VARCHAR(100) NOT NULL,
+	position VARCHAR(50), 
+	department VARCHAR(50),
+	hire_date DATE,
+	salary NUMERIC(10,2)
+);
+
+SELECT * FROM employee;
+
+Star or astriek(*) represents ...All data
+
+To run particular data we can write :
+SELECT employee_id, position, salary FROM employee;
+
+//Inserting data in table :
+
+INSERT INTO employee (name, position, department, hire_date, salary) 
+VALUES ()
+
+// in case of any mistake 
+
+ALTER TABLE employee
+RENAME COLUMN positiion to position;
+
+INSERT INTO employee (name, position, department, hire_date, salary)
+		VALUES('Sukanya', 'data analyst', 'data science', '2025-04-01', 100000 ),
+		('Katty', 'manager', 'data management', '2023-04-01', 80000 ),
+		('Sana', 'HR', 'human resource', '2025-04-02', 65000 ),
+		('praveen', 'Growth analyst', 'data science', '2024-05-03', 45000 ),
+		('Rishvik', 'Finance manager', 'Finance', '2023-06-03', 69000 );
+
+TRUNCATE TABLE employee    (if you want to remove data from the table but serial no. will go on incrementing)
+
+TRUNCATE TABLE employee RESTART IDENTITY;
+
+NOTE : If you want to use INT instead of SERIAL then :
+INSERT INTO employee (employee_id, name, position, department, hire_date, salary)
+		VALUES (101, 'Sukanya', 'data analyst', 'data science', '2025-04-01', 100000 ),
+		(102, 'Katty', 'manager', 'data management', '2023-04-01', 80000 ),
+		(103, 'Sana', 'HR', 'human resource', '2025-04-02', 65000 ),
+		(104, 'praveen', 'Growth analyst', 'data science', '2024-05-03', 45000 ),
+		(105, 'Rishvik', 'Finance manager', 'Finance', '2023-06-03', 69000 );
+
+How to delete row ?
+
+DELETE FROM employee
+WHERE employee_id=105;  (if you want to delete specific row )
+
+How to delete column ?
+
+ALTER TABLE employee
+DROP COLUMN department;
+
+NOTE : if you want to delete database or column then use DROP
+NOTE : if you want to delete row then use DELETE
+
+NOTE : DROP TABLE if exists employee;
+DROP DATABASE if exists company;
+
+Datatype and constraints in SQL :
+
+To comment something : --INSERTING data into table
+
+To UPDATE data in SQL :
+
+UPDATE student
+SET age=24
+Where name='Sukanya';
+
+If you want to change the order of data
+
+SELECT * FROM students ORDER BY student_id ASC ;
+
+
+SQL CODE (everything i need to know):
+
+--create a table
+CREATE TABLE employee (
+	employee_id SERIAL PRIMARY KEY,
+	name VARCHAR(100) NOT NULL,
+	position VARCHAR(50), 
+	department VARCHAR(50),
+	hire_date DATE,
+	salary NUMERIC(10,2)
+);
+
+--Run a table (* means to run all data)
+SELECT * FROM employee;
+
+--inserting data into table
+INSERT INTO employee(name, position, department, hire_date, salary)
+		VALUES ('Sukanya', 'data analyst', 'data science', '2025-04-01', 100000 ),
+		('Katty', 'manager', 'data management', '2023-04-01', 80000 ),
+		('Sana', 'HR', 'human resource', '2025-04-02', 65000 ),
+		('praveen', 'Growth analyst', 'data science', '2024-05-03', 45000 ),
+		('Rishvik', 'Finance manager', 'Finance', '2023-06-03', 69000 );
+
+TRUNCATE TABLE employee RESTART IDENTITY;
+
+DELETE FROM employee
+WHERE employee_id=5;
+
+ALTER TABLE employee
+DROP COLUMN department;
+
+DROP TABLE if exists employee2;
+
+DROP DATABASE if exists company2;
+
+CREATE TABLE student (
+student_id SERIAL PRIMARY KEY,
+name VARCHAR(50) NOT NULL,
+email VARCHAR(100) UNIQUE,
+age INTEGER CHECK (age >= 18),
+city VARCHAR(50) NOT NULL,
+registration_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+SELECT * FROM student;
+
+INSERT INTO student (name, email, age, city)
+		VALUES ('sukanya', 'sukanya@gmail.com', 25, 'hyderabad'),
+		('joey', 'joye@gmail.com', 25, 'hyderabad'),
+		('Chandler', 'chandler@gmail.com', 25, 'chennai'),
+		('monica', 'monica@gmail.com', 29, 'Banglore'),
+		('rachel', 'rachel@gmail.com', 28, 'Kolkata'),
+		('ross', 'ross@gmail.com', 30, 'Noida'),
+		('phebe', 'phebe@gmail.com', 31, 'New Delhi');
+
+SELECT email, age FROM students;
+
+--UPDATE data in SQL
+UPDATE student
+SET age=24
+Where name='sukanya';
+
+--arrange data in ascending or descending order
+SELECT * FROM student ORDER BY student_id ASC;
+
+UPDATE student
+SET city='chennai'
+WHERE age>=31;
+
+UPDATE student
+SET age=27, city='kerela'
+WHERE name = 'monica';
+
+UPDATE student
+SET age=age+1;
+
+DELETE FROM student WHERE student_id=1;
+
+--update data in SQL with toolbar (here you can add rows, delete rows, download it into csv file, generate graph, copy)
+--Query tool bar in SQL
+
+--To Rename the name column to Student name
+ALTER TABLE student
+RENAME COLUMN name to Student_name;
+
+SELECT * FROM student ORDER BY student_id ASC;
+
+--To Change the age column's data type from INT TO SMALLINT
+ALTER TABLE student
+ALTER COLUMN age TYPE SMALLINT;
+
+--To add a NOT NULL constraints in city column
+ALTER TABLE student
+ALTER COLUMN city SET NOT NULL;
+
+--Adding CHECK constraints to age column
+ALTER TABLE student
+ADD CONSTRAINT age CHECK(age>=18);
+
+--If the above query is throwing any error then write the query down below and then run the above query 
+ALTER TABLE student
+DROP CONSTRAINT age;
+
+--RENAME table name from student to customers
+ALTER TABLE student
+RENAME TO customers;
+
+SELECT * FROM customers ORDER BY student_id ASC;
+
+ALL ABOUT CSV FILES :
+
+--CSV stands for comma-separated values. 
+--It's a file format that stores data in a table-like structure, with commas separating values. 
+--CSV files are commonly used to store and exchange data between applications. 
+
+IMP SYNTAX :
+
+1. Alter table - Add column syntax
+ALTER TABLE table_name
+ADD COLUMN column_name;
+
+2. Alter table - drop column syntax
+ALTER TABLE table_name
+DROP COLUMN column_name;  
+
+3. Alter table - Alter/Modify column syntax
+ALTER TABLE table_name
+ALTER COLUMN column_name datatype;
+
+
+OPERATORS IN SQL : 
+
+1. ARITHMETIC OPERATORS : used on numeric values (+, -, *, /, %)
+2. COMPARISION OPERATORS : (=, !=, >, >= etc.)
+3. LOGICAL OPERATORS : (ALL, IN, BETWEEN, LIKE, AND, OR, NOT, ANY)
+4. BITWISE OPERATORS : (Bitwise AND(&), Bitwise OR(|))
+
+FUNCTIONS IN SQL :
+// For detail, reach out to the official page of postgre SQL
+
+These are database objects that contains a set of SQL statements to perform specific task. A function accepts input parameters, perform action and then return the result.
+1. System defined function : Built-in function :  system already knows the meaning of the function and what it needs to operate.  e.g. rand(), round(), upper(), lower(), count(), sum(), max(), etc. 
+2. user defined function :  
+
+* STRING FUNCTION : 
+
+1. upper() : UPPER(first_name)
+2. lower() : LOWER(last_name)
+3. length() :
+4. substring() : sukanya (string), suka (substring)...e.g. SUBSTRING(first_name, 1,4)
+5. now() : Return the current system date & time
+6. format() :
+7. concat() : Adds two or more strings together...e.g. CONCAT(first_name, last_name)
+8. Replace() : e.g. REPLACE(first_name, 'mary', 'mohan')
+9. Trim() : Removes leading and trailing spaces
+
+* AGGREGATE FUNCTIONS :
+
+Aggreate function performs  calculations on multiple values and return a single value. Aggreate functions are used with GROUP BY & SELECT statement. 
+
+e.g. COUNT(), SUM(), AVG(), MAX(), MIN(), ROUND()
+
+e.g. SELECT COUNT(*) FROM payment 
+SELECT COUNT(amount) FROM payment
+SELECT SUM(amount) FROM payment
+SELECT ROUND(AVG(amount), 2) FROM payment etc. 
+
+* GROUP BY statements : If you are using aggregate function, it is mandatory to use GROUP BY statement or else it may display error
+e.g. SELECT mode, SUM(amount) AS total
+     FROM payment
+     GROUP BY mode                ---see in which column you can make a GROUP (Don't group unique category values)
+
+* HAVING clause : it is used to apply a filter on the result of GROUP BY  based on the specified condition. WHERE clause places conditions on the selected columns, where as the HAVING clause places conditions on groups created by GROUP BY clause.
+
+very imp . *Order of execution in SQL :
+
+     SELECT column_name(s)
+     FROM table_name
+     WHERE condition(s)
+     GROUP BY column_name(s)
+     HAVING condition(s)
+     ORDER BY 
+     LIMIT
+ 
+SELECT mode, COUNT(amount) AS total
+FROM payment
+GROUP BY mode
+HAVING COUNT(amount) >= 2 AND COUNT(amount) < 4
+ORDER BY total DESC
+
+TIMESTAMP : it s a datatype used for values that contains both date and time parts . IMP : we use these timestamp if we build our own database to store data.
+1.	TIME : hh:mm:ss
+2.	DATE : YYYY:MM:DD
+3.	YEAR : YYYY OR YY
+4.	TIMESTAMP : YYYY:MM:DD:HH:MM:SS
+5. TIMESTAMPTZ : date, time, timezone
+
+TIMESTAMP functions/operators :
+SHOW TIMEZONE 
+SELECT NOW() 
+SELECT TIMEOFDAY()
+SELECT CURRENT_TIME
+SELECT CURRENT_DATE
+
+EXTRACT Function :
+
+The EXTRACT() function extract a part from a given date value.
+SELECT EXTRACT (MONTH FROM date_field) from table
+1.	YEAR
+2.	QUARTER
+3.	MONTH
+4.	WEEK
+5.	DAY
+6.	HOUR
+7.	MINUTE
