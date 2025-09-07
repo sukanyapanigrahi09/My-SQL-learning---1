@@ -293,3 +293,177 @@ SELECT EXTRACT (MONTH FROM date_field) from table
 5.	DAY
 6.	HOUR
 7.	MINUTE
+
+ALL ABOUT CSV :
+
+--CSV stands for comma-separated values. 
+--It's a file format that stores data in a table-like structure, with commas separating values. 
+--CSV files are commonly used to store and exchange data between applications. 
+
+--HOW TO IMPORT CSV FILE INTO SQL
+
+DROP TABLE IF EXISTS employee2
+
+CREATE TABLE employee2 (
+employee_id	SERIAL	PRIMARY KEY,	
+first_name	VARCHAR (50)	NOT NULL,	
+last_name	VARCHAR (50)	NOT NULL,	
+department	VARCHAR (50)	NOT NULL,	
+salary	DECIMAL(10,2)	CHECK 	(salary >0),
+joining_date	DATE	NOT NULL,	
+age	INT 	CHECK	(age >=18)
+);
+
+
+SELECT * FROM employee2 ORDER BY employee_id ASC;
+
+COPY employee2 (employee_id, first_name, last_name, department, salary, joining_date, age)
+FROM 'C:\Users\Tnluser.PF308536\Downloads\employee_data.csv'
+DELIMITER ','
+CSV HEADER;
+
+--Inorder to import the CSV file ...first go the dataset...then right click on it ...then properties...then securities...copy the link
+
+-- importing CSV file directly to SQL (go to schemas...tables...table_name...right click....import/export...enter filename... go to option...enable header)
+
+CREATE TABLE employee2 (
+employee_id	SERIAL	PRIMARY KEY,	
+name VARCHAR (50)	NOT NULL,	
+position VARCHAR (50),
+department	VARCHAR (50)	NOT NULL,	
+joining_date	DATE	NOT NULL,
+salary	DECIMAL(10,2)	CHECK 	(salary >0)
+);
+
+DROP TABLE IF EXISTS employee2;
+
+SELECT * FROM employee2;
+
+ALTER TABLE employee2
+ADD age INT;
+
+--retrive name , salary and calculate a 10% bonus on the salary
+SELECT name, salary, (salary*0.10) AS bonus
+FROM employee2;
+
+--calculate the Annual salary and salary increment by 5% - Show the monthly new salary as well
+--new way to find out salary (i was having 100% and got a 5 % increment)
+SELECT name, salary,
+(salary*12) AS annual_salary,
+(salary*0.05) AS increment_salary,
+(salary + salary*0.05) AS new_salary,
+(salary * 1.05) AS new_salary2 
+FROM employee2;
+
+--comparision operator
+SELECT * FROM employee2;
+
+
+-- matches age 30
+SELECT * FROM employee2
+WHERE age=30;
+
+
+--matches all except 30
+SELECT name, age FROM employee2
+WHERE age!=30;
+
+
+-- salary greather than 50000
+SELECT name, salary FROM employee2
+WHERE salary<50000;
+
+--LOGICAL OPERATOR 
+
+--AND operator
+SELECT * FROM employee2
+WHERE age<=30 AND salary>30000;
+
+--OR operator
+SELECT * FROM employee2
+WHERE age>=30 OR salary<30000;
+
+
+--using NOT operator
+SELECT * FROM employee2
+WHERE NOT (department='data science');
+
+--BETWEEN, LIKE & IN operator
+
+SELECT * FROM employee2;
+
+
+-- 1) Retrieve employees whose salary is between 40,000 and 60,000. - Use BETWEEN Operators
+
+SELECT name, salary 
+FROM employee2
+WHERE salary BETWEEN 40000 AND 60000;
+
+
+-- 2) Find employees whose email addresses end with gmail.com - Use LIKE Operators
+
+ALTER TABLE employee2
+ADD mail_id VARCHAR(255);
+
+SELECT * FROM employee2;
+
+SELECT name, mail_id 
+FROM employee2
+WHERE mail_id LIKE '%@gmail.com';
+
+
+SELECT name FROM employee2
+WHERE name LIKE '%s%';
+
+SELECT name FROM employee2
+WHERE name LIKE 'S%';
+
+SELECT name FROM employee2
+WHERE name LIKE '%k';
+
+
+-- 3) Retrieve employees who belong to either the 'Finance' or 'Marketing' departments-- Use IN Operator
+
+SELECT name, department
+FROM employee2
+WHERE department IN ('Finance','Data Science');
+
+--IS NULL operator, ORDER BY operator, LIMIT operator, & DISTINCT operator
+SELECT * FROM employee2;
+
+
+-- Find employees where the email column is NULL ( if applicable).
+
+SELECT name, email
+FROM employee2
+WHERE email IS NULL;
+
+
+-- List employees sorted by salary in DESCENDING order.
+
+SELECT name, salary
+FROM employee2
+ORDER BY salary ASC;
+
+-- Retrieve the top 2 highest-paid employees.
+
+SELECT name, salary
+FROM employee2
+ORDER BY salary DESC
+LIMIT 2;
+
+-- Retrieve the top 3 lowest-paid employees.
+
+SELECT name, salary
+FROM employee2
+ORDER BY salary ASC
+LIMIT 3;
+
+-- Retrieve and count a list of unique departments
+
+SELECT DISTINCT department
+FROM employee2;
+
+SELECT COUNT (DISTINCT department) AS DEP_UNIQUE_COUNT
+FROM employee2;
+
